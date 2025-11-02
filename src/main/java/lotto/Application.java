@@ -14,15 +14,26 @@ public class Application {
         System.out.println("\n" + lotto_count + "개를 구매했습니다.");
 
         Lotto[] lottos = createLottos(lotto_count);
-        List<Integer> correctNumbers = inputCorrectNumbers();
 
+        List<Integer> correctNumbers = inputCorrectNumbers();
+        int bonus = inputBonusNumber(correctNumbers);
+    }
+
+    private static int inputBonusNumber(List<Integer> correctNumbers) {
+        System.out.println("\n보너스 번호를 입력해 주세요.");
+        int bonus = Integer.parseInt(readLine());
+        validateNumberRange(bonus);
+        if (correctNumbers.contains(bonus)) {
+            throw new IllegalArgumentException("[ERROR] 보너스는 당첨 번호와 중복될 수 없습니다.");
+        }
+        return bonus;
     }
 
     private static Lotto[] createLottos(int lottoCount) {
         Lotto[] lottos = new Lotto[lottoCount];
         for (int i = 0; i < lottoCount; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
-            validateDuplication(numbers, numbers.getFirst());
+            validateDuplication(numbers);
             lottos[i] = new Lotto(numbers);
             lottos[i].printNumbers();
         }
@@ -38,6 +49,7 @@ public class Application {
             validateNumberRange(Integer.parseInt(s));
             correctNumbers.add(Integer.parseInt(s));
         }
+        validateDuplication(correctNumbers);
         return correctNumbers;
     }
 
@@ -70,6 +82,7 @@ public class Application {
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+            throw new IllegalArgumentException();
         }
     }
 
@@ -80,19 +93,22 @@ public class Application {
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+            throw new IllegalArgumentException();
+
         }
     }
 
-    private static void validateDuplication(List<Integer> correctNumbers, int first) {
+    private static void validateDuplication(List<Integer> correctNumbers) {
         try {
-            if (!checkDuplication(correctNumbers, first)) {
+            if (!checkDuplication(correctNumbers)) {
                 throw new IllegalArgumentException("[ERROR] 로또 번호에 중복된 숫자가 있습니다.");
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
+            throw new IllegalArgumentException();
         }
     }
-    private static boolean checkDuplication(List<Integer> correctNumbers, int first) {
+    private static boolean checkDuplication(List<Integer> correctNumbers) {
         Set<Integer> numbers = new HashSet<>(correctNumbers);
         return numbers.size() == correctNumbers.size();
     }
