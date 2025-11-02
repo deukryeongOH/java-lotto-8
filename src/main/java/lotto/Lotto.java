@@ -26,5 +26,16 @@ public class Lotto {
         return numbers.size() == correctNumbers.size();
     }
 
+    public void printNumbers() {
+        List<Integer> sortedNumbers = new ArrayList<>(this.numbers);
+        Collections.sort(sortedNumbers);
+        List<String> random = new ArrayList<>();
+        for (int rand : sortedNumbers) {
+            random.add(rand + "");
+        }
+        System.out.print("[");
+        System.out.print(String.join(", ", random));
+        System.out.println("]");
+    }
 
 }
