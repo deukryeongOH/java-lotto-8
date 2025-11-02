@@ -1,6 +1,6 @@
 package lotto;
 
-import java.util.List;
+import java.util.*;
 
 public class Lotto {
     private final List<Integer> numbers;
@@ -14,7 +14,17 @@ public class Lotto {
         if (numbers.size() != 6) {
             throw new IllegalArgumentException("[ERROR] 로또 번호는 6개여야 합니다.");
         }
+        if (!checkDuplication(numbers)) {
+            throw new IllegalArgumentException("[ERROR] 로또 번호에 중복된 숫자가 있습니다.");
+        }
     }
 
     // TODO: 추가 기능 구현
+
+    private static boolean checkDuplication(List<Integer> correctNumbers) {
+        Set<Integer> numbers = new HashSet<>(correctNumbers);
+        return numbers.size() == correctNumbers.size();
+    }
+
+
 }
