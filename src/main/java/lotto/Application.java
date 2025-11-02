@@ -21,7 +21,20 @@ public class Application {
         Map<Lotto.LottoRank, Integer> statistics = new EnumMap<>(Lotto.LottoRank.class);
         initMap(statistics);
         long totalPrize = getTotalPrize(correctNumbers, bonus, lottos, statistics);
+        printDetails(statistics);
+        double profitRate = Math.round(((double) totalPrize / price) * 100 * 10) / 10.0;
+        System.out.printf("총 수익률은 %.1f%%입니다.\n", profitRate);
 
+    }
+
+    private static void printDetails(Map<Lotto.LottoRank, Integer> statistics) {
+        System.out.println("\n당첨 통계");
+        System.out.println("---");
+        System.out.printf("%s - %d개\n", Lotto.LottoRank.FIFTH.getDescription(), statistics.get(Lotto.LottoRank.FIFTH));
+        System.out.printf("%s - %d개\n", Lotto.LottoRank.FOURTH.getDescription(), statistics.get(Lotto.LottoRank.FOURTH));
+        System.out.printf("%s - %d개\n", Lotto.LottoRank.THIRD.getDescription(), statistics.get(Lotto.LottoRank.THIRD));
+        System.out.printf("%s - %d개\n", Lotto.LottoRank.SECOND.getDescription(), statistics.get(Lotto.LottoRank.SECOND));
+        System.out.printf("%s - %d개\n", Lotto.LottoRank.FIRST.getDescription(), statistics.get(Lotto.LottoRank.FIRST));
     }
 
     private static long getTotalPrize(List<Integer> correctNumbers, int bonus, Lotto[] lottos, Map<Lotto.LottoRank, Integer> statistics) {
