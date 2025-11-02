@@ -17,6 +17,35 @@ public class Application {
 
         List<Integer> correctNumbers = inputCorrectNumbers();
         int bonus = inputBonusNumber(correctNumbers);
+
+        Map<Lotto.LottoRank, Integer> statistics = new EnumMap<>(Lotto.LottoRank.class);
+        initMap(statistics);
+        long totalPrize = getTotalPrize(correctNumbers, bonus, lottos, statistics);
+
+    }
+
+    private static long getTotalPrize(List<Integer> correctNumbers, int bonus, Lotto[] lottos, Map<Lotto.LottoRank, Integer> statistics) {
+        long totalPrize = 0;
+        for (Lotto lotto : lottos) {
+            int matchCount = lotto.compareNumbers(correctNumbers);
+            boolean bonusCheck = lotto.checkBonus(bonus);
+            Lotto.LottoRank rank = Lotto.LottoRank.valueOf(matchCount, bonusCheck);
+
+            if (rank != Lotto.LottoRank.NONE) {
+                statistics.put(rank, statistics.get(rank) + 1);
+                totalPrize += rank.getPrizeMoney();
+            }
+        }
+        return totalPrize;
+    }
+
+    private static void initMap(Map<Lotto.LottoRank, Integer> statistics) {
+        statistics.put(Lotto.LottoRank.FIFTH, 0);
+        statistics.put(Lotto.LottoRank.FOURTH, 0);
+        statistics.put(Lotto.LottoRank.THIRD, 0);
+        statistics.put(Lotto.LottoRank.SECOND, 0);
+        statistics.put(Lotto.LottoRank.FIRST, 0);
+        statistics.put(Lotto.LottoRank.NONE, 0);
     }
 
     private static int inputBonusNumber(List<Integer> correctNumbers) {
